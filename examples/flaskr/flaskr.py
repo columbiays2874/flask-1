@@ -17,7 +17,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 
 
 # create our little application :)
-app = Flask(__name__)
+
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
@@ -27,8 +27,9 @@ app.config.update(dict(
     USERNAME='admin',
     PASSWORD='default'
 ))
-app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
+app = Flask(__name__)
+app.config.from_object(__name__)
 
 def connect_db():
     """Connects to the specific database."""
@@ -97,26 +98,3 @@ def logout():
     flash('You were logged out')
     return redirect(url_for('show_entries'))
 
-if __name__ == "__main__":
-  import click
-
-  @click.command()
-  @click.option('--debug', is_flag=True)
-  @click.option('--threaded', is_flag=True)
-  @click.argument('HOST', default='0.0.0.0')
-  @click.argument('PORT', default=8111, type=int)
-  def run(debug, threaded, host, port):
-    """
-    This function handles command line parameters.
-    Run the server using
-        python server.py
-    Show the help text using
-        python server.py --help
-    """
-
-    HOST, PORT = host, port
-    print "running on %s:%d" % (HOST, PORT)
-    app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
-
-
-  run()
