@@ -41,5 +41,6 @@ def init_db():
             db.cursor().executescript(f.read())
         db.commit()
 
-
+from flaskr import init_db
+init_db()
 
